@@ -2,6 +2,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var v=localStorage.getItem("taonga.night");var n=(v==="1"||v==="0")?v==="1":matchMedia("(prefers-color-scheme: dark)").matches;if(n)document.documentElement.classList.add("night");}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap">
@@ -3387,6 +3388,18 @@ a:hover .tmin,a:focus-visible .tmin,a:focus-within .tmin{visibility:visible;opac
   "use strict";
 
   var root = document.getElementById("tg");
+  /* The page paints before this script runs. Anything already on screen is
+     marked revealed in the same breath as arming the animations, so the
+     first paint never blinks; only below-the-fold content keeps its
+     scroll-in entrance. */
+  (function(){
+    var vh = window.innerHeight || 800;
+    var els = root.querySelectorAll(".rv");
+    for (var i = 0; i < els.length; i++){
+      var r = els[i].getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) els[i].classList.add("in");
+    }
+  })();
   root.classList.add("js");
 
   /* ============================================================
